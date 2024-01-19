@@ -8,3 +8,37 @@
     <h1> Projeto TPE </h1>
   </body>
 </html>
+
+import time
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+
+def abrir_ou_trocar_guia(driver, url):
+    for handle in driver.window_handles:
+        driver.switch_to.window(handle)
+        if url in driver.current_url:
+            return
+
+    driver.execute_script("window.open('','_blank');")
+    driver.switch_to.window(driver.window_handles[-1])
+    driver.get(url)
+
+sites = ['https://github.com/', 'https://www.google.com', 'https://chromedriver.chromium.org/extensions']
+
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+
+for site in sites:
+    abrir_ou_trocar_guia(driver, site)
+
+for handle in driver.window_handles:
+    driver.switch_to.window(handle)
+    if "github" in driver.current_url:
+        sign_in_button = driver.find_element(By.ID, "user_email")
+        sign_in_button.send_keys('aaaaaaaaaa@gmail.com')
+        time.sleep(8)
+        print(f"Interagindo com a guia que contém 'github': {driver.current_url}")
+
+input("Pressione Enter para fechar o navegador...")
+driver.quit()
