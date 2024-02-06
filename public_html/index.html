@@ -42,3 +42,23 @@ for handle in driver.window_handles:
 
 input("Pressione Enter para fechar o navegador...")
 driver.quit()
+
+
+
+import pandas as pd
+
+dicionario_sites = {
+    'site1': ['site1', 'xx', 'yy', 'uu'],
+    'site5': ['site5', 'yy', 'gg', 'gg']
+}
+
+with open('seuarquivo.txt', 'r') as arquivo:
+    dados = []
+    for linha in arquivo:
+        linha = linha.strip()
+        valores = linha.split(', ')
+        if valores[0] in dicionario_sites:
+            dados.append(dicionario_sites[valores[0]])
+
+df_resultante = pd.DataFrame(dados, columns=['site', 'param1', 'param2', 'param3'])
+print(df_resultante)
